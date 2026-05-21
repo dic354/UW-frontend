@@ -1,0 +1,30 @@
+.footer {
+  background-color: #333333;
+  color: #cccccc;
+
+  .footer-text {
+    color: #aaaaaa;
+    line-height: 1.7;
+  }
+
+  .footer-link {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  .footer-social {
+    color: #aaaaaa;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #1E90FF;
+    }
+  }
+}
