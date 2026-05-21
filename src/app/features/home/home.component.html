@@ -1,1 +1,169 @@
-<p>home works!</p>
+<!-- ─── HERO ─────────────────────────────────────────── -->
+<section class="hero">
+  <!-- Video de fondo -->
+  <video
+  class="hero-video"
+  [muted]="true"
+  autoplay
+  loop
+  playsinline
+  oncanplay="this.play()">
+  <source src="videos/hero.mp4" type="video/mp4">
+</video>
+
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">Descubre la moda urbana</h1>
+    <p class="hero-subtitle">
+      Explora las últimas tendencias en ropa urbana para hombres y mujeres.
+      Encuentra tu estilo perfecto con UrbanWear.
+    </p>
+    <a routerLink="/catalogo" class="btn btn-hero">
+      Comprar ahora
+    </a>
+  </div>
+</section>
+
+<!-- ─── NUEVAS LLEGADAS ───────────────────────────────── -->
+<section class="section-nuevas">
+  <div class="container">
+
+    <h2 class="section-title">Nuevas llegadas</h2>
+
+    <!-- Loading skeleton -->
+    <div *ngIf="loading" class="row g-4">
+      <div class="col-md-4" *ngFor="let i of [1,2,3]">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-line w-75 mt-3"></div>
+          <div class="skeleton-line w-50 mt-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos -->
+    <div *ngIf="!loading" class="row g-4">
+      <div
+        class="col-md-4"
+        *ngFor="let producto of nuevasLlegadas">
+        <div class="producto-card" [routerLink]="['/producto', producto.id]">
+
+          <!-- Imagen -->
+          <div class="producto-img-wrapper">
+            <img
+              *ngIf="producto.imagenUrl"
+              [src]="producto.imagenUrl"
+              [alt]="producto.nombre"
+              class="producto-img">
+            <div *ngIf="!producto.imagenUrl" class="producto-img-placeholder">
+              <i class="bi bi-image text-muted fs-1"></i>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="producto-info">
+            <h6 class="producto-nombre">{{ producto.nombre }}</h6>
+            <p class="producto-precio">{{ formatPrecio(producto.precio) }}</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin productos -->
+    <div *ngIf="!loading && nuevasLlegadas.length === 0"
+         class="text-center py-5 text-muted">
+      <i class="bi bi-bag-x fs-1 mb-3 d-block"></i>
+      <p>Aún no hay productos disponibles</p>
+      <p class="small">Añade productos desde el panel de administración</p>
+    </div>
+
+    <!-- Ver todo -->
+    <div class="text-center mt-4" *ngIf="nuevasLlegadas.length > 0">
+      <a routerLink="/catalogo" class="btn btn-outline-dark btn-sm px-4">
+        Ver todo el catálogo
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── COLECCIONES DESTACADAS ────────────────────────── -->
+<section class="section-colecciones">
+  <div class="container">
+
+    <h2 class="section-title">Colecciones destacadas</h2>
+
+    <div class="row g-4">
+
+      <!-- Si hay categorías del backend las mostramos -->
+      <ng-container *ngIf="categorias.length > 0">
+        <div class="col-md-4" *ngFor="let cat of categorias">
+          <div class="coleccion-card" [routerLink]="['/catalogo']"
+               [queryParams]="{ categoriaId: cat.id }">
+            <div class="coleccion-img-wrapper">
+              <img
+                *ngIf="cat.imagenCategoria"
+                [src]="cat.imagenCategoria"
+                [alt]="cat.nombre"
+                class="coleccion-img">
+              <div *ngIf="!cat.imagenCategoria" class="coleccion-img-placeholder">
+                <i class="bi bi-collection fs-1 text-muted"></i>
+              </div>
+            </div>
+            <p class="coleccion-nombre">{{ cat.nombre }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Si no hay categorías mostramos placeholders visuales -->
+      <ng-container *ngIf="categorias.length === 0">
+        <div class="col-md-4" *ngFor="let col of ['Verano', 'Invierno', 'Accesorios']">
+          <div class="coleccion-card" routerLink="/catalogo">
+            <div class="coleccion-img-placeholder">
+              <i class="bi bi-collection fs-1 text-muted"></i>
+            </div>
+            <p class="coleccion-nombre">Colección de {{ col }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── NEWSLETTER ────────────────────────────────────── -->
+<section class="section-newsletter">
+  <div class="container">
+    <div class="newsletter-box">
+
+      <h2 class="newsletter-title">Suscríbete a nuestro boletín</h2>
+      <p class="newsletter-subtitle">
+        Recibe las últimas noticias, ofertas exclusivas y más directamente
+        en tu bandeja de entrada.
+      </p>
+
+      <!-- Éxito -->
+      <div *ngIf="newsletterEnviado" class="newsletter-success">
+        <i class="bi bi-check-circle me-2"></i>
+        ¡Gracias! Te has suscrito correctamente.
+      </div>
+
+      <!-- Formulario -->
+      <div *ngIf="!newsletterEnviado" class="newsletter-form">
+        <input
+          type="email"
+          class="newsletter-input"
+          placeholder="Tu correo electrónico"
+          [(ngModel)]="newsletterEmail"
+          (keyup.enter)="suscribirNewsletter()">
+        <button
+          class="btn btn-newsletter"
+          (click)="suscribirNewsletter()">
+          Suscribirse
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
