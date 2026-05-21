@@ -1,1 +1,123 @@
-<p>register works!</p>
+<div class="register-page">
+  <div class="register-card">
+
+    <!-- Logo -->
+    <div class="text-center mb-4">
+      <a routerLink="/" class="brand-link">
+        URBAN<span>WEAR</span>
+      </a>
+    </div>
+
+    <!-- Título -->
+    <h2 class="register-title">Crear Cuenta</h2>
+    <p class="register-subtitle">Únete a UrbanWear y empieza a comprar</p>
+
+    <!-- Error global -->
+    <div *ngIf="errorMsg" class="alert alert-danger py-2 small">
+      <i class="bi bi-exclamation-circle me-2"></i>{{ errorMsg }}
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Nombre -->
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          [class.is-invalid]="nombre.invalid && nombre.touched"
+          formControlName="nombre"
+          placeholder="Ingresa tu nombre">
+        <div class="invalid-feedback">
+          <span *ngIf="nombre.errors?.['required']">El nombre es obligatorio</span>
+          <span *ngIf="nombre.errors?.['minlength']">Mínimo 2 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          [class.is-invalid]="email.invalid && email.touched"
+          formControlName="email"
+          placeholder="Ingresa tu correo electrónico">
+        <div class="invalid-feedback">
+          <span *ngIf="email.errors?.['required']">El email es obligatorio</span>
+          <span *ngIf="email.errors?.['email']">Introduce un email válido</span>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <div class="input-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control border-end-0"
+            [class.is-invalid]="contrasena.invalid && contrasena.touched"
+            formControlName="contrasena"
+            placeholder="Ingresa tu contraseña">
+          <button
+            type="button"
+            class="btn btn-outline-secondary border-start-0 toggle-pass"
+            [class.is-invalid]="contrasena.invalid && contrasena.touched"
+            (click)="togglePassword()">
+            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+          <div class="invalid-feedback">
+            <span *ngIf="contrasena.errors?.['required']">La contraseña es obligatoria</span>
+            <span *ngIf="contrasena.errors?.['minlength']">Mínimo 8 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div class="mb-4">
+        <label class="form-label">Confirmar Contraseña</label>
+        <div class="input-group">
+          <input
+            [type]="showConfirm ? 'text' : 'password'"
+            class="form-control border-end-0"
+            [class.is-invalid]="(confirmarContrasena.touched && confirmarContrasena.errors?.['required'])
+                                 || (form.errors?.['passwordsMismatch'] && confirmarContrasena.touched)"
+            formControlName="confirmarContrasena"
+            placeholder="Confirma tu contraseña">
+          <button
+            type="button"
+            class="btn btn-outline-secondary border-start-0 toggle-pass"
+            (click)="toggleConfirm()">
+            <i [class]="showConfirm ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+          <div class="invalid-feedback">
+            <span *ngIf="confirmarContrasena.errors?.['required']">
+              Confirma tu contraseña
+            </span>
+            <span *ngIf="form.errors?.['passwordsMismatch'] && !confirmarContrasena.errors?.['required']">
+              Las contraseñas no coinciden
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón submit -->
+      <button
+        type="submit"
+        class="btn btn-primary w-100 btn-register"
+        [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <span>{{ loading ? 'Creando cuenta...' : 'Registrarse' }}</span>
+      </button>
+
+    </form>
+
+    <!-- Link a login -->
+    <p class="text-center mt-4 login-link">
+      ¿Ya tienes cuenta?
+      <a routerLink="/auth/login">Iniciar Sesión</a>
+    </p>
+
+  </div>
+</div>

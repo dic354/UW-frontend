@@ -1,0 +1,117 @@
+.register-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  padding: 2rem 1rem;
+}
+
+.register-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.brand-link {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  text-decoration: none;
+
+  span {
+    color: #1E90FF;
+  }
+}
+
+.register-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+.register-subtitle {
+  font-size: 0.88rem;
+  color: #888;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 0.4rem;
+}
+
+.form-control {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: #bbb;
+  }
+
+  &:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+  }
+}
+
+.toggle-pass {
+  background: #ffffff;
+  border-color: #e0e0e0;
+  color: #888;
+  border-radius: 0 6px 6px 0 !important;
+
+  &:hover {
+    color: #1E90FF;
+    background: #ffffff;
+  }
+}
+
+.btn-register {
+  background-color: #1E90FF;
+  border-color: #1E90FF;
+  border-radius: 6px;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #1a7fd4;
+    border-color: #1a7fd4;
+  }
+
+  &:disabled {
+    opacity: 0.75;
+  }
+}
+
+.login-link {
+  font-size: 0.88rem;
+  color: #888;
+
+  a {
+    color: #1E90FF;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
