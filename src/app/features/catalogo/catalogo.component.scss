@@ -1,0 +1,328 @@
+.catalogo-page {
+  min-height: calc(100vh - 140px);
+  padding: 3rem 0 4rem;
+  background-color: #ffffff;
+}
+
+// ─── CABECERA ─────────────────────────────────────────
+.catalogo-header {
+  margin-bottom: 2rem;
+}
+
+.catalogo-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
+}
+
+.catalogo-subtitle {
+  font-size: 0.88rem;
+  color: #888;
+  margin: 0;
+}
+
+// ─── PESTAÑAS CATEGORÍA ───────────────────────────────
+.categorias-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #1E90FF;
+    color: #1E90FF;
+  }
+
+  &.active {
+    background-color: #1E90FF;
+    border-color: #1E90FF;
+    color: #ffffff;
+  }
+}
+
+// ─── BARRA DE FILTROS ─────────────────────────────────
+.filtros-bar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filtro-select {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  color: #555;
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #1E90FF;
+  }
+}
+
+.filtro-input {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  color: #1a1a1a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s;
+  flex: 1;
+  min-width: 160px;
+
+  &::placeholder {
+    color: #bbb;
+  }
+
+  &:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+  }
+}
+
+.btn-limpiar {
+  border: none;
+  background: none;
+  color: #888;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    color: #1E90FF;
+  }
+}
+
+// ─── TARJETA PRODUCTO ─────────────────────────────────
+.producto-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+
+    .producto-img {
+      transform: scale(1.04);
+    }
+
+    .btn-carrito {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.producto-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.producto-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.producto-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-agotado {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+// ─── INFO PRODUCTO ────────────────────────────────────
+.producto-info {
+  padding: 0.75rem 0.1rem 0;
+}
+
+.producto-categoria {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.producto-nombre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.producto-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.producto-precio {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.producto-talla {
+  font-size: 0.78rem;
+  color: #888;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+}
+
+// ─── BOTÓN CARRITO ────────────────────────────────────
+.btn-carrito {
+  width: 100%;
+  border: 1px solid #1E90FF;
+  background: #ffffff;
+  color: #1E90FF;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #1E90FF;
+    color: #ffffff;
+  }
+
+  &:disabled {
+    border-color: #e0e0e0;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+
+  &.btn-success-state {
+    background-color: #198754;
+    border-color: #198754;
+    color: #ffffff;
+  }
+
+  &.btn-error-state {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+  }
+}
+
+// ─── SIN RESULTADOS ───────────────────────────────────
+.sin-resultados {
+  text-align: center;
+  padding: 5rem 0;
+  color: #888;
+}
+
+// ─── PAGINACIÓN ───────────────────────────────────────
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 3rem;
+}
+
+.pag-btn {
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.88rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 38px;
+
+  &:hover:not(:disabled) {
+    border-color: #1E90FF;
+    color: #1E90FF;
+  }
+
+  &.active {
+    background-color: #1E90FF;
+    border-color: #1E90FF;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ─── SKELETON ─────────────────────────────────────────
+.skeleton-card {
+  padding: 0;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 280px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-line {
+  height: 13px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

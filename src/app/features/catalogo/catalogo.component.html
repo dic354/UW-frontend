@@ -1,1 +1,199 @@
-<p>catalogo works!</p>
+<div class="catalogo-page">
+  <div class="container">
+
+    <!-- Cabecera -->
+    <div class="catalogo-header">
+      <h1 class="catalogo-title">Catálogo de Productos</h1>
+      <p class="catalogo-subtitle" *ngIf="totalProductos > 0">
+        {{ totalProductos }} productos encontrados
+      </p>
+    </div>
+
+    <!-- Pestañas de categoría -->
+    <div class="categorias-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="!filtros.categoriaId"
+        (click)="filtrarPorCategoria(undefined)">
+        Todos
+      </button>
+      <button
+        class="tab-btn"
+        *ngFor="let cat of categorias"
+        [class.active]="filtros.categoriaId === cat.id"
+        (click)="filtrarPorCategoria(cat.id)">
+        {{ cat.nombre }}
+      </button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filtros-bar">
+
+      <!-- Talla -->
+      <select class="filtro-select" [(ngModel)]="filtros.talla"
+              (change)="aplicarFiltros()">
+        <option [ngValue]="undefined">Talla</option>
+        <option *ngFor="let t of tallas" [value]="t">{{ t }}</option>
+      </select>
+
+      <!-- Precio mínimo -->
+      <select class="filtro-select" [(ngModel)]="filtros.precioMin"
+              (change)="aplicarFiltros()">
+        <option [ngValue]="undefined">Precio mín.</option>
+        <option [value]="0">0€</option>
+        <option [value]="10">10€</option>
+        <option [value]="20">20€</option>
+        <option [value]="50">50€</option>
+        <option [value]="100">100€</option>
+      </select>
+
+      <!-- Precio máximo -->
+      <select class="filtro-select" [(ngModel)]="filtros.precioMax"
+              (change)="aplicarFiltros()">
+        <option [ngValue]="undefined">Precio máx.</option>
+        <option [value]="20">20€</option>
+        <option [value]="50">50€</option>
+        <option [value]="100">100€</option>
+        <option [value]="200">200€</option>
+        <option [value]="500">500€</option>
+      </select>
+
+      <!-- Búsqueda por nombre -->
+      <input
+        type="text"
+        class="filtro-input"
+        placeholder="Buscar producto..."
+        [(ngModel)]="filtros.nombre"
+        (keyup.enter)="aplicarFiltros()">
+
+      <!-- Limpiar filtros -->
+      <button
+        class="btn-limpiar"
+        *ngIf="filtros.categoriaId || filtros.talla ||
+               filtros.precioMin || filtros.precioMax || filtros.nombre"
+        (click)="limpiarFiltros()">
+        <i class="bi bi-x-circle me-1"></i>Limpiar
+      </button>
+
+    </div>
+
+    <!-- Loading skeleton -->
+    <div *ngIf="loading" class="row g-4">
+      <div class="col-6 col-md-4 col-lg-3" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-line w-75 mt-3"></div>
+          <div class="skeleton-line w-50 mt-2"></div>
+          <div class="skeleton-line w-100 mt-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid productos -->
+    <div *ngIf="!loading && productos.length > 0" class="row g-4">
+      <div
+        class="col-6 col-md-4 col-lg-3"
+        *ngFor="let producto of productos">
+
+        <div class="producto-card"
+             [routerLink]="['/producto', producto.id]">
+
+          <!-- Badge sin stock -->
+          <div class="producto-img-wrapper">
+            <span *ngIf="producto.stock === 0" class="badge-agotado">
+              Agotado
+            </span>
+            <img
+              *ngIf="producto.imagenUrl"
+              [src]="producto.imagenUrl"
+              [alt]="producto.nombre"
+              class="producto-img">
+            <div *ngIf="!producto.imagenUrl"
+                 class="producto-img-placeholder">
+              <i class="bi bi-image fs-1 text-muted"></i>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="producto-info">
+            <p class="producto-categoria" *ngIf="producto.categoria">
+              {{ producto.categoria.nombre }}
+            </p>
+            <h6 class="producto-nombre">{{ producto.nombre }}</h6>
+            <div class="producto-footer">
+              <span class="producto-precio">
+                {{ formatPrecio(producto.precio) }}
+              </span>
+              <span *ngIf="producto.talla" class="producto-talla">
+                {{ producto.talla }}
+              </span>
+            </div>
+
+            <!-- Botón añadir al carrito -->
+            <button
+              class="btn-carrito"
+              [class.btn-success-state]="mensajeCarrito[producto.id] === 'ok'"
+              [class.btn-error-state]="mensajeCarrito[producto.id] === 'error'"
+              [disabled]="producto.stock === 0 || addingToCart[producto.id]"
+              (click)="addToCart(producto, $event)">
+
+              <span *ngIf="!addingToCart[producto.id] && !mensajeCarrito[producto.id]">
+                <i class="bi bi-bag-plus me-1"></i>Añadir al carrito
+              </span>
+              <span *ngIf="addingToCart[producto.id]">
+                <span class="spinner-border spinner-border-sm me-1"></span>
+                Añadiendo...
+              </span>
+              <span *ngIf="mensajeCarrito[producto.id] === 'ok'">
+                <i class="bi bi-check-lg me-1"></i>¡Añadido!
+              </span>
+              <span *ngIf="mensajeCarrito[producto.id] === 'error'">
+                <i class="bi bi-x-lg me-1"></i>Error
+              </span>
+
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sin resultados -->
+    <div *ngIf="!loading && productos.length === 0"
+         class="sin-resultados">
+      <i class="bi bi-search fs-1 mb-3 d-block"></i>
+      <h5>No se encontraron productos</h5>
+      <p class="text-muted small">Prueba con otros filtros</p>
+      <button class="btn btn-outline-dark btn-sm mt-2"
+              (click)="limpiarFiltros()">
+        Ver todos los productos
+      </button>
+    </div>
+
+    <!-- Paginación -->
+    <nav *ngIf="totalPaginas > 1" class="paginacion">
+      <button
+        class="pag-btn"
+        [disabled]="paginaActual === 1"
+        (click)="cambiarPagina(paginaActual - 1)">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+
+      <button
+        class="pag-btn"
+        *ngFor="let p of getPaginas()"
+        [class.active]="p === paginaActual"
+        (click)="cambiarPagina(p)">
+        {{ p }}
+      </button>
+
+      <button
+        class="pag-btn"
+        [disabled]="paginaActual === totalPaginas"
+        (click)="cambiarPagina(paginaActual + 1)">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </nav>
+
+  </div>
+</div>
