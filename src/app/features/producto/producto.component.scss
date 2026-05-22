@@ -1,0 +1,438 @@
+.producto-page {
+  min-height: calc(100vh - 140px);
+  padding: 2rem 0 5rem;
+  background-color: #ffffff;
+}
+
+// ─── BREADCRUMB ───────────────────────────────────────
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+
+  a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #1E90FF;
+    }
+  }
+
+  .breadcrumb-sep {
+    color: #ccc;
+  }
+
+  .breadcrumb-actual {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+}
+
+// ─── IMÁGENES ─────────────────────────────────────────
+.img-principal-wrapper {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-principal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-agotado {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+}
+
+.galeria {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.galeria-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.active {
+    border-color: #1E90FF;
+  }
+
+  &:hover {
+    border-color: #1E90FF;
+  }
+}
+
+// ─── INFO PRODUCTO ────────────────────────────────────
+.producto-categoria {
+  font-size: 0.78rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.producto-nombre {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.producto-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.estrellas {
+  display: flex;
+  gap: 0.1rem;
+  color: #f5a623;
+}
+
+.rating-texto {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.producto-precio {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.producto-descripcion {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.producto-detalle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.detalle-label {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 0.88rem;
+}
+
+.detalle-valor {
+  color: #555;
+}
+
+// ─── TALLAS ───────────────────────────────────────────
+.talla-selector {
+  margin-bottom: 1.25rem;
+}
+
+.tallas-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.talla-btn {
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #1a1a1a;
+
+  &:hover:not(:disabled) {
+    border-color: #1E90FF;
+    color: #1E90FF;
+  }
+
+  &.active {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  &.disabled,
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+// ─── STOCK ────────────────────────────────────────────
+.stock-info {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+// ─── CANTIDAD ─────────────────────────────────────────
+.cantidad-selector {
+  margin-bottom: 1.5rem;
+}
+
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: fit-content;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.cantidad-btn {
+  border: none;
+  background: #f8f9fa;
+  padding: 0.5rem 0.85rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #1a1a1a;
+
+  &:hover:not(:disabled) {
+    background-color: #e9ecef;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.cantidad-valor {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  min-width: 48px;
+  text-align: center;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+
+// ─── BOTONES ACCIÓN ───────────────────────────────────
+.acciones {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-add-cart {
+  flex: 1;
+  background-color: #1E90FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 180px;
+
+  &:hover:not(:disabled) {
+    background-color: #1a7fd4;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.btn-ver-carrito {
+  border: 1px solid #1a1a1a;
+  color: #1a1a1a;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+}
+
+// ─── RESEÑAS ──────────────────────────────────────────
+.resenas-section {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.resenas-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.resenas-media {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.media-numero {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.resena-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.resena-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.resena-autor {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
+
+.resena-fecha {
+  margin-left: auto;
+}
+
+.resena-comentario {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sin-resenas {
+  text-align: center;
+  padding: 2.5rem 0;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.nueva-resena {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.estrellas-selector {
+  display: flex;
+  gap: 0.25rem;
+  cursor: pointer;
+  color: #ccc;
+
+  .bi-star-fill {
+    color: #f5a623;
+  }
+}
+
+.no-logado-resena {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+// ─── SKELETON ─────────────────────────────────────────
+.loading-state {
+  padding: 2rem 0;
+}
+
+.skeleton-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skeleton-img-main {
+  height: 520px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-info {
+  padding-top: 1rem;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
