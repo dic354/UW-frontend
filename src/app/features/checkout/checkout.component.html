@@ -1,1 +1,249 @@
-<p>checkout works!</p>
+<div class="checkout-page">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav">
+      <a routerLink="/">Inicio</a>
+      <span class="breadcrumb-sep">/</span>
+      <a routerLink="/carrito">Carrito</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-actual">Checkout</span>
+    </nav>
+
+    <h1 class="checkout-title">Finalizar compra</h1>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loading" class="row g-4">
+
+      <!-- IZQUIERDA: Formulario -->
+      <div class="col-lg-7">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+          <!-- Datos de envío -->
+          <div class="seccion-card">
+            <h5 class="seccion-title">
+              <i class="bi bi-geo-alt me-2"></i>
+              Datos de envio
+            </h5>
+
+            <div class="mb-3">
+              <label class="form-label">Direccion de envio</label>
+              <input
+                type="text"
+                class="form-control"
+                [class.is-invalid]="direccionEnvio.invalid && direccionEnvio.touched"
+                formControlName="direccionEnvio"
+                placeholder="Calle, numero, piso...">
+              <div class="invalid-feedback">
+                <span *ngIf="direccionEnvio.errors?.['required']">
+                  La direccion es obligatoria
+                </span>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-7">
+                <label class="form-label">Ciudad</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="ciudadEnvio.invalid && ciudadEnvio.touched"
+                  formControlName="ciudadEnvio"
+                  placeholder="Ciudad">
+                <div class="invalid-feedback">La ciudad es obligatoria</div>
+              </div>
+              <div class="col-md-5">
+                <label class="form-label">Codigo postal</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="codigoPostalEnvio.invalid && codigoPostalEnvio.touched"
+                  formControlName="codigoPostalEnvio"
+                  placeholder="28001">
+                <div class="invalid-feedback">El codigo postal es obligatorio</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Método de pago -->
+          <div class="seccion-card">
+            <h5 class="seccion-title">
+              <i class="bi bi-credit-card me-2"></i>
+              Metodo de pago
+            </h5>
+
+            <div class="metodos-grid">
+              <label
+                *ngFor="let mp of metodosPago"
+                class="metodo-option"
+                [class.active]="metodoPago.value === mp.valor">
+                <input
+                  type="radio"
+                  formControlName="metodoPago"
+                  [value]="mp.valor"
+                  class="d-none">
+                <i [class]="'bi ' + mp.icono + ' me-2'"></i>
+                {{ mp.label }}
+              </label>
+            </div>
+
+            <!-- Info tarjeta (simulada) -->
+            <div *ngIf="metodoPago.value === 'tarjeta'" class="tarjeta-info">
+              <div class="mb-3">
+                <label class="form-label">Numero de tarjeta</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19">
+              </div>
+              <div class="row g-3">
+                <div class="col-7">
+                  <label class="form-label">Fecha de expiracion</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="MM/AA"
+                    maxlength="5">
+                </div>
+                <div class="col-5">
+                  <label class="form-label">CVV</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="123"
+                    maxlength="3">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Error global -->
+          <div *ngIf="errorMsg" class="alert alert-danger py-2 small">
+            <i class="bi bi-exclamation-circle me-2"></i>{{ errorMsg }}
+          </div>
+
+          <!-- Botón confirmar -->
+          <button
+            type="submit"
+            class="btn-confirmar"
+            [disabled]="procesando">
+            <span *ngIf="!procesando">
+              <i class="bi bi-lock-fill me-2"></i>
+              Confirmar pedido
+            </span>
+            <span *ngIf="procesando">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Procesando...
+            </span>
+          </button>
+
+        </form>
+      </div>
+
+      <!-- DERECHA: Resumen -->
+      <div class="col-lg-5">
+        <div class="resumen-card">
+
+          <h5 class="resumen-title">Resumen del pedido</h5>
+
+          <!-- Productos -->
+          <div class="resumen-productos">
+            <div class="resumen-item"
+                 *ngFor="let item of carrito?.items">
+              <div class="resumen-item-img">
+                <img
+                  *ngIf="item.producto.imagenUrl"
+                  [src]="item.producto.imagenUrl"
+                  [alt]="item.producto.nombre">
+                <div *ngIf="!item.producto.imagenUrl"
+                     class="resumen-item-placeholder">
+                  <i class="bi bi-image text-muted"></i>
+                </div>
+                <span class="resumen-item-cantidad">{{ item.cantidad }}</span>
+              </div>
+              <div class="resumen-item-info">
+                <p class="resumen-item-nombre">{{ item.producto.nombre }}</p>
+              </div>
+              <div class="resumen-item-precio">
+                {{ formatPrecio(Number(item.producto.precio) * item.cantidad) }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Código descuento -->
+          <div class="descuento-section">
+            <p class="descuento-label">Codigo de descuento</p>
+
+            <div *ngIf="!descuento" class="descuento-form">
+              <input
+                type="text"
+                class="descuento-input"
+                placeholder="Introduce tu codigo"
+                [(ngModel)]="codigoDescuento"
+                (keyup.enter)="validarDescuento()">
+              <button
+                class="btn-aplicar"
+                [disabled]="validandoDescuento || !codigoDescuento"
+                (click)="validarDescuento()">
+                <span *ngIf="!validandoDescuento">Aplicar</span>
+                <span *ngIf="validandoDescuento">
+                  <span class="spinner-border spinner-border-sm"></span>
+                </span>
+              </button>
+            </div>
+
+            <div *ngIf="errorDescuento" class="descuento-error">
+              <i class="bi bi-x-circle me-1"></i>{{ errorDescuento }}
+            </div>
+
+            <div *ngIf="descuento" class="descuento-aplicado">
+              <i class="bi bi-check-circle me-1"></i>
+              {{ descuento.codigo }} — {{ descuento.porcentaje }}% de descuento
+              <button class="btn-quitar-descuento" (click)="quitarDescuento()">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Totales -->
+          <div class="resumen-linea">
+            <span>Subtotal</span>
+            <span>{{ formatPrecio(calcularSubtotal()) }}</span>
+          </div>
+
+          <div class="resumen-linea text-success"
+               *ngIf="descuento">
+            <span>Descuento ({{ descuento.porcentaje }}%)</span>
+            <span>-{{ formatPrecio(calcularDescuento()) }}</span>
+          </div>
+
+          <div class="resumen-linea">
+            <span>Envio</span>
+            <span class="text-success">Gratis</span>
+          </div>
+
+          <div class="resumen-total">
+            <span>Total</span>
+            <span>{{ formatPrecio(calcularTotal()) }}</span>
+          </div>
+
+          <!-- Seguridad -->
+          <div class="seguridad-info">
+            <i class="bi bi-shield-check text-success me-1"></i>
+            <span class="small text-muted">
+              Pago 100% seguro y encriptado
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
