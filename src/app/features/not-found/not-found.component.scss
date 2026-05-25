@@ -1,0 +1,114 @@
+.not-found-page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 2rem 1rem;
+}
+
+.not-found-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+// ─── NÚMERO 404 ───────────────────────────────────────
+.error-numero {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #f0f0f0;
+  letter-spacing: -4px;
+  margin-bottom: -1rem;
+
+  @media (max-width: 576px) {
+    font-size: 6rem;
+  }
+}
+
+// ─── ICONO ────────────────────────────────────────────
+.error-icono {
+  font-size: 3.5rem;
+  color: #1E90FF;
+  margin-bottom: 1.25rem;
+}
+
+// ─── TEXTOS ───────────────────────────────────────────
+.error-titulo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.error-subtitulo {
+  font-size: 0.95rem;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+// ─── BOTONES ──────────────────────────────────────────
+.error-acciones {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.btn-home {
+  background-color: #1E90FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #1a7fd4;
+    color: #ffffff;
+  }
+}
+
+.btn-catalogo {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #1E90FF;
+    color: #1E90FF;
+  }
+}
+
+// ─── LINKS RÁPIDOS ────────────────────────────────────
+.links-rapidos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.link-rapido {
+  font-size: 0.85rem;
+  color: #1E90FF;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+  }
+}

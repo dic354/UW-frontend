@@ -75,7 +75,8 @@ export const routes: Routes = [
 
   // ─── RUTA COMODÍN ────────────────────────────────────
   {
-    path: '**',
-    redirectTo: ''
+  path: '**',
+  loadComponent: () =>
+    import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
 ];
