@@ -154,7 +154,7 @@
 
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label">Contrasena actual</label>
+                  <label class="form-label">Contraseña actual</label>
                   <input
                     type="password"
                     class="form-control"
@@ -162,11 +162,11 @@
                                         && formPassword.get('contrasenaActual')!.touched"
                     formControlName="contrasenaActual">
                   <div class="invalid-feedback">
-                    La contrasena actual es obligatoria
+                    La contraseña actual es obligatoria
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">Nueva contrasena</label>
+                  <label class="form-label">Nueva contraseña</label>
                   <input
                     type="password"
                     class="form-control"
@@ -184,7 +184,7 @@
                 type="submit"
                 class="btn-guardar mt-4"
                 [disabled]="guardandoPassword">
-                <span *ngIf="!guardandoPassword">Actualizar Contrasena</span>
+                <span *ngIf="!guardandoPassword">Actualizar contraseña</span>
                 <span *ngIf="guardandoPassword">
                   <span class="spinner-border spinner-border-sm me-2"></span>
                   Actualizando...
