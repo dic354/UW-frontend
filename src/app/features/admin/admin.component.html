@@ -1,1 +1,629 @@
-<p>admin works!</p>
+<div class="admin-page">
+  <div class="container-fluid">
+    <div class="row g-0">
+
+      <!-- SIDEBAR -->
+      <div class="col-lg-2 admin-sidebar">
+        <div class="sidebar-logo">
+          URBAN<span>WEAR</span>
+          <small class="d-block">Admin Panel</small>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="sidebar-item"
+            [class.active]="seccionActiva === 'dashboard'"
+            (click)="cambiarSeccion('dashboard')">
+            <i class="bi bi-grid me-2"></i>Dashboard
+          </button>
+          <button class="sidebar-item"
+            [class.active]="seccionActiva === 'productos'"
+            (click)="cambiarSeccion('productos')">
+            <i class="bi bi-bag me-2"></i>Productos
+          </button>
+          <button class="sidebar-item"
+            [class.active]="seccionActiva === 'categorias'"
+            (click)="cambiarSeccion('categorias')">
+            <i class="bi bi-tags me-2"></i>Categorias
+          </button>
+          <button class="sidebar-item"
+            [class.active]="seccionActiva === 'pedidos'"
+            (click)="cambiarSeccion('pedidos')">
+            <i class="bi bi-receipt me-2"></i>Pedidos
+          </button>
+          <button class="sidebar-item"
+            [class.active]="seccionActiva === 'descuentos'"
+            (click)="cambiarSeccion('descuentos')">
+            <i class="bi bi-percent me-2"></i>Descuentos
+          </button>
+          <hr class="sidebar-divider">
+          <a routerLink="/" class="sidebar-item">
+            <i class="bi bi-house me-2"></i>Ver tienda
+          </a>
+        </nav>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="col-lg-10 admin-content">
+
+        <!-- Mensajes globales -->
+        <div *ngIf="mensajeOk" class="alert alert-success alert-top">
+          <i class="bi bi-check-circle me-2"></i>{{ mensajeOk }}
+        </div>
+        <div *ngIf="errorMsg" class="alert alert-danger alert-top">
+          <i class="bi bi-exclamation-circle me-2"></i>{{ errorMsg }}
+        </div>
+
+        <!-- ─── DASHBOARD ─── -->
+        <div *ngIf="seccionActiva === 'dashboard'" class="seccion">
+          <h2 class="seccion-title">Dashboard</h2>
+
+          <div class="row g-4">
+            <div class="col-md-3">
+              <div class="stat-card" (click)="cambiarSeccion('productos')">
+                <div class="stat-icon bg-blue">
+                  <i class="bi bi-bag"></i>
+                </div>
+                <div>
+                  <p class="stat-numero">{{ stats.totalProductos }}</p>
+                  <p class="stat-label">Productos</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card" (click)="cambiarSeccion('pedidos')">
+                <div class="stat-icon bg-green">
+                  <i class="bi bi-receipt"></i>
+                </div>
+                <div>
+                  <p class="stat-numero">{{ stats.totalPedidos }}</p>
+                  <p class="stat-label">Pedidos</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card" (click)="cambiarSeccion('categorias')">
+                <div class="stat-icon bg-orange">
+                  <i class="bi bi-tags"></i>
+                </div>
+                <div>
+                  <p class="stat-numero">{{ stats.totalCategorias }}</p>
+                  <p class="stat-label">Categorias</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card" (click)="cambiarSeccion('descuentos')">
+                <div class="stat-icon bg-purple">
+                  <i class="bi bi-percent"></i>
+                </div>
+                <div>
+                  <p class="stat-numero">{{ stats.totalDescuentos }}</p>
+                  <p class="stat-label">Descuentos</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-accesos mt-4">
+            <h5 class="mb-3">Accesos rapidos</h5>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <button class="acceso-btn w-100"
+                        (click)="cambiarSeccion('productos');
+                                 abrirModalProducto()">
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Nuevo producto
+                </button>
+              </div>
+              <div class="col-md-4">
+                <button class="acceso-btn w-100"
+                        (click)="cambiarSeccion('categorias');
+                                 abrirModalCategoria()">
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Nueva categoria
+                </button>
+              </div>
+              <div class="col-md-4">
+                <button class="acceso-btn w-100"
+                        (click)="cambiarSeccion('descuentos');
+                                 abrirModalDescuento()">
+                  <i class="bi bi-plus-circle me-2"></i>
+                  Nuevo descuento
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── PRODUCTOS ─── -->
+        <div *ngIf="seccionActiva === 'productos'" class="seccion">
+          <div class="seccion-header">
+            <h2 class="seccion-title">Productos</h2>
+            <button class="btn-nuevo" (click)="abrirModalProducto()">
+              <i class="bi bi-plus me-1"></i>Nuevo producto
+            </button>
+          </div>
+
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div *ngIf="!loading" class="tabla-wrapper">
+            <table class="admin-tabla">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Categoria</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of productos">
+                  <td>
+                    <div class="tabla-producto">
+                      <img *ngIf="p.imagenUrl" [src]="p.imagenUrl"
+                           [alt]="p.nombre" class="tabla-img">
+                      <div *ngIf="!p.imagenUrl" class="tabla-img-placeholder">
+                        <i class="bi bi-image"></i>
+                      </div>
+                      <span class="tabla-nombre">{{ p.nombre }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="tabla-badge">
+                      {{ p.categoria?.nombre || '-' }}
+                    </span>
+                  </td>
+                  <td>{{ formatPrecio(p.precio) }}</td>
+                  <td>
+                    <span [class]="p.stock === 0 ? 'text-danger fw-bold' : ''">
+                      {{ p.stock }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="estado-badge"
+                          [class]="p.activo ? 'estado-entregado' : 'estado-cancelado'">
+                      {{ p.activo ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="tabla-acciones">
+                      <button class="btn-accion btn-editar"
+                              (click)="abrirModalProducto(p)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn-accion btn-eliminar"
+                              (click)="eliminarProducto(p.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="productos.length === 0">
+                  <td colspan="6" class="text-center text-muted py-4">
+                    No hay productos
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ─── CATEGORIAS ─── -->
+        <div *ngIf="seccionActiva === 'categorias'" class="seccion">
+          <div class="seccion-header">
+            <h2 class="seccion-title">Categorias</h2>
+            <button class="btn-nuevo" (click)="abrirModalCategoria()">
+              <i class="bi bi-plus me-1"></i>Nueva categoria
+            </button>
+          </div>
+
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div *ngIf="!loading" class="tabla-wrapper">
+            <table class="admin-tabla">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripcion</th>
+                  <th>Productos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cat of categorias">
+                  <td class="fw-500">{{ cat.nombre }}</td>
+                  <td class="text-muted small">
+                    {{ cat.descripcion || '-' }}
+                  </td>
+                  <td>{{ cat._count?.productos || 0 }}</td>
+                  <td>
+                    <div class="tabla-acciones">
+                      <button class="btn-accion btn-editar"
+                              (click)="abrirModalCategoria(cat)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn-accion btn-eliminar"
+                              (click)="eliminarCategoria(cat.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="categorias.length === 0">
+                  <td colspan="4" class="text-center text-muted py-4">
+                    No hay categorias
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ─── PEDIDOS ─── -->
+        <div *ngIf="seccionActiva === 'pedidos'" class="seccion">
+          <h2 class="seccion-title">Pedidos</h2>
+
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div *ngIf="!loading" class="tabla-wrapper">
+            <table class="admin-tabla">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Cliente</th>
+                  <th>Fecha</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Cambiar estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pedido of pedidos">
+                  <td class="fw-bold">#{{ pedido.id }}</td>
+                  <td>
+                    <span class="small">{{ pedido.usuario?.nombre }}</span>
+                    <br>
+                    <span class="text-muted" style="font-size:0.75rem">
+                      {{ pedido.usuario?.email }}
+                    </span>
+                  </td>
+                  <td class="small">
+                    {{ pedido.fechaPedido | date:'dd/MM/yy HH:mm' }}
+                  </td>
+                  <td class="fw-bold">{{ formatPrecio(pedido.total) }}</td>
+                  <td>
+                    <span class="estado-badge"
+                          [class]="getEstadoClass(pedido.estado)">
+                      {{ pedido.estado }}
+                    </span>
+                  </td>
+                  <td>
+                    <select
+                      class="estado-select"
+                      [value]="pedido.estado"
+                      (change)="actualizarEstadoPedido(
+                        pedido.id,
+                        $any($event.target).value)">
+                      <option *ngFor="let e of estadosPedido" [value]="e">
+                        {{ e }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr *ngIf="pedidos.length === 0">
+                  <td colspan="6" class="text-center text-muted py-4">
+                    No hay pedidos
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ─── DESCUENTOS ─── -->
+        <div *ngIf="seccionActiva === 'descuentos'" class="seccion">
+          <div class="seccion-header">
+            <h2 class="seccion-title">Descuentos</h2>
+            <button class="btn-nuevo" (click)="abrirModalDescuento()">
+              <i class="bi bi-plus me-1"></i>Nuevo descuento
+            </button>
+          </div>
+
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div *ngIf="!loading" class="tabla-wrapper">
+            <table class="admin-tabla">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Descuento</th>
+                  <th>Vigencia</th>
+                  <th>Usos</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of descuentos">
+                  <td>
+                    <span class="codigo-badge">{{ d.codigo }}</span>
+                  </td>
+                  <td class="fw-bold">{{ d.porcentaje }}%</td>
+                  <td class="small text-muted">
+                    {{ d.fechaInicio | date:'dd/MM/yy' }} —
+                    {{ d.fechaFin | date:'dd/MM/yy' }}
+                  </td>
+                  <td>
+                    {{ d.usosActuales }}
+                    <span *ngIf="d.usosMaximos">/ {{ d.usosMaximos }}</span>
+                    <span *ngIf="!d.usosMaximos" class="text-muted">
+                      / ilimitado
+                    </span>
+                  </td>
+                  <td>
+                    <span class="estado-badge"
+                          [class]="d.activo ? 'estado-entregado' : 'estado-cancelado'">
+                      {{ d.activo ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="tabla-acciones">
+                      <button class="btn-accion btn-editar"
+                              (click)="abrirModalDescuento(d)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn-accion btn-eliminar"
+                              (click)="eliminarDescuento(d.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="descuentos.length === 0">
+                  <td colspan="6" class="text-center text-muted py-4">
+                    No hay descuentos
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL PRODUCTO ─── -->
+<div class="modal-overlay" *ngIf="modalProductoAbierto"
+     (click)="cerrarModalProducto()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5>{{ productoEditando ? 'Editar producto' : 'Nuevo producto' }}</h5>
+      <button class="modal-close" (click)="cerrarModalProducto()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="errorMsg" class="alert alert-danger py-2 small mb-3">
+        {{ errorMsg }}
+      </div>
+
+      <form [formGroup]="formProducto" novalidate>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control"
+                   formControlName="nombre"
+                   [class.is-invalid]="formProducto.get('nombre')!.invalid
+                                       && formProducto.get('nombre')!.touched">
+            <div class="invalid-feedback">El nombre es obligatorio</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Descripcion</label>
+            <textarea class="form-control" rows="2"
+                      formControlName="descripcion"></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Precio *</label>
+            <input type="number" class="form-control"
+                   formControlName="precio" min="0" step="0.01">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Stock *</label>
+            <input type="number" class="form-control"
+                   formControlName="stock" min="0">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Categoria *</label>
+            <select class="form-control" formControlName="categoriaId"
+                    [class.is-invalid]="formProducto.get('categoriaId')!.invalid
+                                        && formProducto.get('categoriaId')!.touched">
+              <option [ngValue]="null">Selecciona categoria</option>
+              <option *ngFor="let cat of categorias" [value]="cat.id">
+                {{ cat.nombre }}
+              </option>
+            </select>
+            <div class="invalid-feedback">Selecciona una categoria</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Talla</label>
+            <select class="form-control" formControlName="talla">
+              <option [ngValue]="null">Sin talla</option>
+              <option *ngFor="let t of tallas" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Color</label>
+            <input type="text" class="form-control"
+                   formControlName="color" placeholder="Negro, Blanco...">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">URL imagen</label>
+            <input type="text" class="form-control"
+                   formControlName="imagenUrl"
+                   placeholder="https://...">
+          </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input"
+                     id="activo" formControlName="activo">
+              <label class="form-check-label" for="activo">
+                Producto activo
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModalProducto()">
+        Cancelar
+      </button>
+      <button class="btn-guardar-modal" [disabled]="guardando"
+              (click)="guardarProducto()">
+        <span *ngIf="!guardando">Guardar</span>
+        <span *ngIf="guardando">
+          <span class="spinner-border spinner-border-sm me-1"></span>
+          Guardando...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL CATEGORIA ─── -->
+<div class="modal-overlay" *ngIf="modalCategoriaAbierto"
+     (click)="cerrarModalCategoria()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5>{{ categoriaEditando ? 'Editar categoria' : 'Nueva categoria' }}</h5>
+      <button class="modal-close" (click)="cerrarModalCategoria()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="formCategoria" novalidate>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control"
+                   formControlName="nombre"
+                   [class.is-invalid]="formCategoria.get('nombre')!.invalid
+                                       && formCategoria.get('nombre')!.touched">
+            <div class="invalid-feedback">El nombre es obligatorio</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Descripcion</label>
+            <textarea class="form-control" rows="2"
+                      formControlName="descripcion"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">URL imagen categoria</label>
+            <input type="text" class="form-control"
+                   formControlName="imagenCategoria"
+                   placeholder="https://...">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModalCategoria()">
+        Cancelar
+      </button>
+      <button class="btn-guardar-modal" [disabled]="guardando"
+              (click)="guardarCategoria()">
+        <span *ngIf="!guardando">Guardar</span>
+        <span *ngIf="guardando">
+          <span class="spinner-border spinner-border-sm me-1"></span>
+          Guardando...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL DESCUENTO ─── -->
+<div class="modal-overlay" *ngIf="modalDescuentoAbierto"
+     (click)="cerrarModalDescuento()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5>{{ descuentoEditando ? 'Editar descuento' : 'Nuevo descuento' }}</h5>
+      <button class="modal-close" (click)="cerrarModalDescuento()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="formDescuento" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Codigo *</label>
+            <input type="text" class="form-control"
+                   formControlName="codigo"
+                   placeholder="VERANO20"
+                   style="text-transform:uppercase">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Porcentaje (%) *</label>
+            <input type="number" class="form-control"
+                   formControlName="porcentaje" min="1" max="100">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Fecha inicio *</label>
+            <input type="date" class="form-control"
+                   formControlName="fechaInicio">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Fecha fin *</label>
+            <input type="date" class="form-control"
+                   formControlName="fechaFin">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Usos maximos</label>
+            <input type="number" class="form-control"
+                   formControlName="usosMaximos"
+                   placeholder="Dejar vacio para ilimitado">
+          </div>
+          <div class="col-md-6 d-flex align-items-end">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input"
+                     id="activoDesc" formControlName="activo">
+              <label class="form-check-label" for="activoDesc">
+                Descuento activo
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModalDescuento()">
+        Cancelar
+      </button>
+      <button class="btn-guardar-modal" [disabled]="guardando"
+              (click)="guardarDescuento()">
+        <span *ngIf="!guardando">Guardar</span>
+        <span *ngIf="guardando">
+          <span class="spinner-border spinner-border-sm me-1"></span>
+          Guardando...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
