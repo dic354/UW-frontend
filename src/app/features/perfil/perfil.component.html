@@ -1,1 +1,311 @@
-<p>perfil works!</p>
+<div class="perfil-page">
+  <div class="container">
+
+    <!-- Loading -->
+    <div *ngIf="loadingUsuario" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loadingUsuario" class="row g-4">
+
+      <!-- SIDEBAR -->
+      <div class="col-lg-3">
+        <div class="sidebar-card">
+
+          <!-- Avatar -->
+          <div class="sidebar-avatar">
+            <div class="avatar-circle">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <p class="avatar-nombre">{{ usuario?.nombre }}</p>
+            <p class="avatar-email">{{ usuario?.email }}</p>
+          </div>
+
+          <!-- Menu -->
+          <nav class="sidebar-nav">
+            <button
+              class="sidebar-item"
+              [class.active]="seccionActiva === 'pedidos'"
+              (click)="cambiarSeccion('pedidos')">
+              <i class="bi bi-bag-check me-2"></i>
+              Mis Pedidos
+            </button>
+            <button
+              class="sidebar-item"
+              [class.active]="seccionActiva === 'perfil'"
+              (click)="cambiarSeccion('perfil')">
+              <i class="bi bi-person me-2"></i>
+              Perfil
+            </button>
+            <button
+              class="sidebar-item"
+              [class.active]="seccionActiva === 'direcciones'"
+              (click)="cambiarSeccion('direcciones')">
+              <i class="bi bi-geo-alt me-2"></i>
+              Direcciones
+            </button>
+            <hr class="sidebar-divider">
+            <button class="sidebar-item text-danger" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Cerrar Sesion
+            </button>
+          </nav>
+
+        </div>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="col-lg-9">
+
+        <!-- Pedido exitoso -->
+        <div *ngIf="pedidoExitoso" class="alert alert-success mb-4">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          <strong>¡Pedido realizado con exito!</strong>
+          Tu pedido ha sido procesado correctamente.
+        </div>
+
+        <!-- ─── SECCIÓN PERFIL ─── -->
+        <div *ngIf="seccionActiva === 'perfil'">
+
+          <h2 class="seccion-title">Informacion Personal</h2>
+
+          <div *ngIf="mensajeOk" class="alert alert-success py-2 small mb-3">
+            <i class="bi bi-check-circle me-2"></i>{{ mensajeOk }}
+          </div>
+          <div *ngIf="errorMsg" class="alert alert-danger py-2 small mb-3">
+            <i class="bi bi-exclamation-circle me-2"></i>{{ errorMsg }}
+          </div>
+
+          <div class="contenido-card">
+            <form [formGroup]="formPerfil" (ngSubmit)="guardarPerfil()" novalidate>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nombre completo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [class.is-invalid]="nombre.invalid && nombre.touched"
+                    formControlName="nombre">
+                  <div class="invalid-feedback">El nombre es obligatorio</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Correo electronico</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    [class.is-invalid]="email.invalid && email.touched"
+                    formControlName="email">
+                  <div class="invalid-feedback">Introduce un email valido</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Telefono</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    formControlName="telefono"
+                    placeholder="600 000 000">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Ciudad</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="ciudad"
+                    placeholder="Madrid">
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label">Direccion</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="direccion"
+                    placeholder="Calle, numero, piso...">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Codigo postal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="codigoPostal"
+                    placeholder="28001">
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn-guardar mt-4"
+                [disabled]="guardando">
+                <span *ngIf="!guardando">Guardar Cambios</span>
+                <span *ngIf="guardando">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Guardando...
+                </span>
+              </button>
+
+            </form>
+          </div>
+
+          <!-- Cambiar contraseña -->
+          <h2 class="seccion-title mt-4">Cambiar Contrasena</h2>
+          <div class="contenido-card">
+            <form [formGroup]="formPassword"
+                  (ngSubmit)="guardarPassword()" novalidate>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Contrasena actual</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    [class.is-invalid]="formPassword.get('contrasenaActual')!.invalid
+                                        && formPassword.get('contrasenaActual')!.touched"
+                    formControlName="contrasenaActual">
+                  <div class="invalid-feedback">
+                    La contrasena actual es obligatoria
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Nueva contrasena</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    [class.is-invalid]="formPassword.get('contrasenaNueva')!.invalid
+                                        && formPassword.get('contrasenaNueva')!.touched"
+                    formControlName="contrasenaNueva"
+                    placeholder="Minimo 8 caracteres">
+                  <div class="invalid-feedback">
+                    Minimo 8 caracteres
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn-guardar mt-4"
+                [disabled]="guardandoPassword">
+                <span *ngIf="!guardandoPassword">Actualizar Contrasena</span>
+                <span *ngIf="guardandoPassword">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Actualizando...
+                </span>
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+
+        <!-- ─── SECCIÓN PEDIDOS ─── -->
+        <div *ngIf="seccionActiva === 'pedidos'">
+
+          <h2 class="seccion-title">Mis Pedidos</h2>
+
+          <div *ngIf="loadingPedidos" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div *ngIf="!loadingPedidos && pedidos.length === 0"
+               class="sin-pedidos">
+            <i class="bi bi-bag-x fs-1 mb-3 d-block"></i>
+            <h5>Aun no tienes pedidos</h5>
+            <p class="text-muted">Explora el catalogo y haz tu primera compra</p>
+            <a routerLink="/catalogo" class="btn btn-primary mt-2 px-4">
+              Ver catalogo
+            </a>
+          </div>
+
+          <div *ngIf="!loadingPedidos && pedidos.length > 0">
+            <div class="pedido-card" *ngFor="let pedido of pedidos">
+
+              <div class="pedido-header">
+                <div>
+                  <span class="pedido-id">Pedido #{{ pedido.id }}</span>
+                  <span class="pedido-fecha text-muted small ms-2">
+                    {{ pedido.fechaPedido | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+                <span class="estado-badge" [class]="getEstadoClass(pedido.estado)">
+                  {{ pedido.estado }}
+                </span>
+              </div>
+
+              <div class="pedido-productos">
+                <div class="pedido-producto"
+                     *ngFor="let detalle of pedido.detalles">
+                  <img
+                    *ngIf="detalle.producto?.imagenUrl"
+                    [src]="detalle.producto!.imagenUrl"
+                    [alt]="detalle.producto?.nombre"
+                    class="pedido-producto-img">
+                  <div *ngIf="!detalle.producto?.imagenUrl"
+                       class="pedido-producto-img-placeholder">
+                    <i class="bi bi-image text-muted"></i>
+                  </div>
+                  <div class="pedido-producto-info">
+                    <p class="pedido-producto-nombre">
+                      {{ detalle.producto?.nombre }}
+                    </p>
+                    <p class="text-muted small mb-0">
+                      x{{ detalle.cantidad }} —
+                      {{ formatPrecio(detalle.precioUnitario) }} ud.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pedido-footer">
+                <span class="text-muted small">
+                  {{ pedido.detalles.length }} producto(s)
+                </span>
+                <span class="pedido-total">
+                  Total: {{ formatPrecio(pedido.total) }}
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─── SECCIÓN DIRECCIONES ─── -->
+        <div *ngIf="seccionActiva === 'direcciones'">
+
+          <h2 class="seccion-title">Direcciones Guardadas</h2>
+
+          <div class="contenido-card">
+
+            <div class="direccion-item" *ngIf="usuario?.direccion">
+              <div>
+                <p class="direccion-tipo">Direccion de Envio</p>
+                <p class="direccion-datos">
+                  {{ usuario?.direccion }},
+                  {{ usuario?.ciudad }}
+                  {{ usuario?.codigoPostal }}
+                </p>
+              </div>
+              <button
+                class="btn-editar-dir"
+                (click)="cambiarSeccion('perfil')">
+                <i class="bi bi-pencil"></i>
+              </button>
+            </div>
+
+            <div *ngIf="!usuario?.direccion" class="sin-direccion">
+              <i class="bi bi-geo-alt fs-2 mb-2 d-block text-muted"></i>
+              <p class="text-muted">No tienes direcciones guardadas</p>
+              <button
+                class="btn-guardar mt-2"
+                (click)="cambiarSeccion('perfil')">
+                Añadir direccion
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
