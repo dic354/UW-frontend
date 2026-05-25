@@ -1,0 +1,261 @@
+.contacto-page {
+  min-height: calc(100vh - 140px);
+  background-color: #ffffff;
+}
+
+// ─── HERO ─────────────────────────────────────────────
+.contacto-hero {
+  background-color: #1a1a2e;
+  padding: 3.5rem 0;
+  text-align: center;
+}
+
+.contacto-hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.contacto-hero-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+// ─── BODY ─────────────────────────────────────────────
+.contacto-body {
+  padding: 4rem 1rem 5rem;
+}
+
+// ─── FORMULARIO ───────────────────────────────────────
+.form-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.form-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 0.4rem;
+}
+
+.form-control {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 0 3px rgba(30,144,255,0.1);
+    outline: none;
+  }
+
+  &::placeholder { color: #bbb; }
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.btn-enviar {
+  background-color: #1E90FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #1a7fd4;
+  }
+
+  &:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+  }
+}
+
+// ─── ENVIADO ──────────────────────────────────────────
+.enviado-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.enviado-icono {
+  font-size: 3.5rem;
+  color: #198754;
+  margin-bottom: 1rem;
+}
+
+.enviado-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.enviado-card p {
+  color: #888;
+  margin-bottom: 1.5rem;
+}
+
+.btn-nuevo-mensaje {
+  border: 1px solid #1E90FF;
+  background: #ffffff;
+  color: #1E90FF;
+  border-radius: 6px;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #1E90FF;
+    color: #ffffff;
+  }
+}
+
+// ─── INFO CONTACTO ────────────────────────────────────
+.info-card {
+  background: #1a1a2e;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.info-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  align-items: flex-start;
+}
+
+.info-icono {
+  width: 38px;
+  height: 38px;
+  background-color: rgba(30,144,255,0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1E90FF;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.info-valor {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.redes-sociales {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.redes-iconos {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.red-social {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #1E90FF;
+    color: #ffffff;
+  }
+}
+
+// ─── FAQ ──────────────────────────────────────────────
+.faq-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.faq-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1.25rem;
+}
+
+.faq-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.faq-pregunta {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.3rem;
+}
+
+.faq-respuesta {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+  padding-left: 1.4rem;
+  line-height: 1.5;
+}

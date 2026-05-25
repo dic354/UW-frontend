@@ -1,0 +1,238 @@
+<div class="contacto-page">
+
+  <!-- Hero pequeño -->
+  <div class="contacto-hero">
+    <div class="container">
+      <h1 class="contacto-hero-title">Contactanos</h1>
+      <p class="contacto-hero-sub">
+        Estamos aqui para ayudarte. Envianos tu consulta
+        y te responderemos en menos de 24 horas.
+      </p>
+    </div>
+  </div>
+
+  <div class="container contacto-body">
+    <div class="row g-5">
+
+      <!-- IZQUIERDA: Formulario -->
+      <div class="col-lg-7">
+
+        <!-- Éxito -->
+        <div *ngIf="enviado" class="enviado-card">
+          <div class="enviado-icono">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <h3>¡Mensaje enviado!</h3>
+          <p>Gracias por contactarnos. Te responderemos
+             en menos de 24 horas.</p>
+          <button class="btn-nuevo-mensaje"
+                  (click)="enviado = false">
+            Enviar otro mensaje
+          </button>
+        </div>
+
+        <!-- Formulario -->
+        <div *ngIf="!enviado" class="form-card">
+          <h2 class="form-title">Envianos un mensaje</h2>
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+            <div class="row g-3">
+
+              <!-- Nombre -->
+              <div class="col-md-6">
+                <label class="form-label">Tu nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="nombre.invalid && nombre.touched"
+                  formControlName="nombre"
+                  placeholder="Nombre">
+                <div class="invalid-feedback">
+                  El nombre es obligatorio
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6">
+                <label class="form-label">Tu email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [class.is-invalid]="email.invalid && email.touched"
+                  formControlName="email"
+                  placeholder="email&#64;email.com">
+                <div class="invalid-feedback">
+                  <span *ngIf="email.errors?.['required']">
+                    El email es obligatorio
+                  </span>
+                  <span *ngIf="email.errors?.['email']">
+                    Introduce un email valido
+                  </span>
+                </div>
+              </div>
+
+              <!-- Asunto -->
+              <div class="col-12">
+                <label class="form-label">Asunto</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="asunto.invalid && asunto.touched"
+                  formControlName="asunto"
+                  placeholder="¿En que podemos ayudarte?">
+                <div class="invalid-feedback">
+                  El asunto es obligatorio
+                </div>
+              </div>
+
+              <!-- Mensaje -->
+              <div class="col-12">
+                <label class="form-label">Mensaje</label>
+                <textarea
+                  class="form-control"
+                  rows="6"
+                  [class.is-invalid]="mensaje.invalid && mensaje.touched"
+                  formControlName="mensaje"
+                  placeholder="Escribe tu consulta aqui...">
+                </textarea>
+                <div class="invalid-feedback">
+                  El mensaje debe tener al menos 10 caracteres
+                </div>
+              </div>
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn-enviar mt-4"
+              [disabled]="enviando">
+              <span *ngIf="!enviando">
+                <i class="bi bi-send me-2"></i>Enviar mensaje
+              </span>
+              <span *ngIf="enviando">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Enviando...
+              </span>
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- DERECHA: Info de contacto -->
+      <div class="col-lg-5">
+
+        <div class="info-card">
+          <h3 class="info-title">Informacion de contacto</h3>
+
+          <div class="info-item">
+            <div class="info-icono">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <p class="info-label">Direccion</p>
+              <p class="info-valor">
+                Calle de la Moda 42, Planta 2<br>
+                28004 Madrid, España
+              </p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icono">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+              <p class="info-label">Telefono</p>
+              <p class="info-valor">+34 900 123 456</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icono">
+              <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div>
+              <p class="info-label">Email</p>
+              <p class="info-valor">
+                soporteurbanwear&#64;gmail.com
+              </p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icono">
+              <i class="bi bi-clock-fill"></i>
+            </div>
+            <div>
+              <p class="info-label">Horario de atencion</p>
+              <p class="info-valor">
+                Lunes a Viernes<br>
+                9:00 — 18:00
+              </p>
+            </div>
+          </div>
+
+          <!-- Redes sociales -->
+          <div class="redes-sociales">
+            <p class="info-label mb-2">Siguenos en redes</p>
+            <div class="redes-iconos">
+              <a href="#" class="red-social">
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a href="#" class="red-social">
+                <i class="bi bi-tiktok"></i>
+              </a>
+              <a href="#" class="red-social">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="red-social">
+                <i class="bi bi-twitter-x"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ rápido -->
+        <div class="faq-card">
+          <h5 class="faq-title">Preguntas frecuentes</h5>
+
+          <div class="faq-item">
+            <p class="faq-pregunta">
+              <i class="bi bi-chevron-right me-2 text-primary"></i>
+              ¿Cuanto tarda el envio?
+            </p>
+            <p class="faq-respuesta">
+              Los envios nacionales tardan entre 2 y 5 dias habiles.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-pregunta">
+              <i class="bi bi-chevron-right me-2 text-primary"></i>
+              ¿Puedo devolver un producto?
+            </p>
+            <p class="faq-respuesta">
+              Si, tienes 30 dias desde la recepcion para
+              solicitar una devolucion.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-pregunta">
+              <i class="bi bi-chevron-right me-2 text-primary"></i>
+              ¿El envio es gratuito?
+            </p>
+            <p class="faq-respuesta">
+              Si, todos los envios son gratuitos
+              sin minimo de compra.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

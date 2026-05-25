@@ -59,6 +59,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/perfil/perfil.component').then(m => m.PerfilComponent)
   },
+  {
+  path: 'contacto',
+  loadComponent: () =>
+    import('./features/contacto/contacto.component').then(m => m.ContactoComponent)
+  },
 
   // ─── RUTAS DE ADMIN (requieren rol administrador) ────
   {
