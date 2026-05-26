@@ -469,11 +469,13 @@
             <input type="text" class="form-control"
                    formControlName="color" placeholder="Negro, Blanco...">
           </div>
-          <div class="col-md-6">
-            <label class="form-label">URL imagen</label>
-            <input type="text" class="form-control"
-                   formControlName="imagenUrl"
-                   placeholder="https://...">
+          <div class="col-12">
+            <label class="form-label">Imagen del producto</label>
+            <app-image-upload
+              tipo="producto"
+              [imagenActual]="formProducto.get('imagenUrl')?.value || ''"
+              (imagenSubida)="formProducto.patchValue({ imagenUrl: $event })">
+            </app-image-upload>
           </div>
           <div class="col-12">
             <div class="form-check">
@@ -530,12 +532,6 @@
             <label class="form-label">Descripcion</label>
             <textarea class="form-control" rows="2"
                       formControlName="descripcion"></textarea>
-          </div>
-          <div class="col-12">
-            <label class="form-label">URL imagen categoria</label>
-            <input type="text" class="form-control"
-                   formControlName="imagenCategoria"
-                   placeholder="https://...">
           </div>
         </div>
       </form>

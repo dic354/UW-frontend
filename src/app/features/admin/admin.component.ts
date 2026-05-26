@@ -10,6 +10,7 @@ import { Producto, CreateProductoDto, Talla } from '../../core/models/producto.m
 import { Categoria } from '../../core/models/categoria.model';
 import { Pedido, EstadoPedido } from '../../core/models/pedido.model';
 import { Descuento } from '../../core/models/descuento.model';
+import { ImageUploadComponent } from '../../shared/image-upload/image-upload.component';
 
 type SeccionAdmin =
   'dashboard' | 'productos' | 'categorias' | 'pedidos' | 'descuentos';
@@ -17,7 +18,7 @@ type SeccionAdmin =
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, ImageUploadComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })

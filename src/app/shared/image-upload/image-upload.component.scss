@@ -1,0 +1,121 @@
+.image-upload {
+  width: 100%;
+}
+
+// ─── ZONA DE SUBIDA ───────────────────────────────────
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 160px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  padding: 1rem;
+  background-color: #fafafa;
+
+  &:hover {
+    border-color: #1E90FF;
+    background-color: #f0f7ff;
+  }
+}
+
+.upload-icono {
+  font-size: 2rem;
+  color: #bbb;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.upload-texto {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.2rem;
+}
+
+.upload-sub {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin: 0;
+}
+
+// ─── PREVIEW ──────────────────────────────────────────
+.imagen-preview {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f4f4f4;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  .imagen-preview:hover & {
+    opacity: 1;
+  }
+}
+
+.btn-cambiar {
+  background-color: #1E90FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover { background-color: #1a7fd4; }
+}
+
+.btn-eliminar-img {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover { background-color: #bb2d3b; }
+}
+
+.upload-spinner {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// ─── ERROR ────────────────────────────────────────────
+.upload-error {
+  font-size: 0.82rem;
+  color: #dc3545;
+  margin-top: 0.4rem;
+}

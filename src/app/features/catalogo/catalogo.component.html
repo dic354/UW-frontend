@@ -65,15 +65,7 @@
         placeholder="Buscar producto..."
         [(ngModel)]="filtros.nombre"
         (keyup.enter)="aplicarFiltros()">
-
-      <!-- Limpiar filtros -->
-      <button
-        class="btn-limpiar"
-        *ngIf="filtros.categoriaId || filtros.talla ||
-               filtros.precioMin || filtros.precioMax || filtros.nombre"
-        (click)="limpiarFiltros()">
-        <i class="bi bi-x-circle me-1"></i>Limpiar
-      </button>
+      
 
     </div>
 
