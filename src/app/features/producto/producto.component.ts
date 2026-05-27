@@ -31,6 +31,7 @@ export class ProductoComponent implements OnInit {
   tallaSeleccionada: Talla | null = null;
   cantidad = 1;
   imagenActiva = '';
+  intentoCompra = false;
 
   loading = true;
   addingToCart = false;
@@ -40,6 +41,7 @@ export class ProductoComponent implements OnInit {
   nuevaResena = { puntuacion: 5, comentario: '' };
   enviandoResena = false;
 
+  // Todas las tallas disponibles visualmente
   tallas: Talla[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   get isLoggedIn() {
@@ -60,7 +62,8 @@ export class ProductoComponent implements OnInit {
       next: (p) => {
         this.producto = p;
         this.imagenActiva = p.imagenUrl || '';
-        if (p.talla) this.tallaSeleccionada = p.talla;
+        this.tallaSeleccionada = null;
+        this.intentoCompra = false;
         this.loading = false;
       },
       error: () => {
@@ -97,6 +100,11 @@ export class ProductoComponent implements OnInit {
     }
 
     if (!this.producto) return;
+
+    if (!this.tallaSeleccionada) {
+      this.intentoCompra = true;
+      return;
+    }
 
     this.addingToCart = true;
     this.mensajeCarrito = '';

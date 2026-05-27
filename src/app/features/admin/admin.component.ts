@@ -6,14 +6,13 @@ import { ProductosService } from '../../core/services/productos.service';
 import { CategoriasService } from '../../core/services/categorias.service';
 import { PedidosService } from '../../core/services/pedidos.service';
 import { DescuentosService } from '../../core/services/descuentos.service';
-import { Producto, CreateProductoDto, Talla } from '../../core/models/producto.model';
+import { Producto, Talla } from '../../core/models/producto.model';
 import { Categoria } from '../../core/models/categoria.model';
 import { Pedido, EstadoPedido } from '../../core/models/pedido.model';
 import { Descuento } from '../../core/models/descuento.model';
 import { ImageUploadComponent } from '../../shared/image-upload/image-upload.component';
 
-type SeccionAdmin =
-  'dashboard' | 'productos' | 'categorias' | 'pedidos' | 'descuentos';
+type SeccionAdmin = 'dashboard' | 'productos' | 'categorias' | 'pedidos' | 'descuentos';
 
 @Component({
   selector: 'app-admin',
@@ -32,66 +31,48 @@ export class AdminComponent implements OnInit {
 
   seccionActiva: SeccionAdmin = 'dashboard';
 
-  // Datos
   productos: Producto[] = [];
   categorias: Categoria[] = [];
   pedidos: Pedido[] = [];
   descuentos: Descuento[] = [];
+  tallaSeleccionada: Talla | null = null;
 
-  // Stats dashboard
-  stats = {
-    totalProductos: 0,
-    totalPedidos: 0,
-    totalCategorias: 0,
-    totalDescuentos: 0
-  };
+  stats = { totalProductos: 0, totalPedidos: 0, totalCategorias: 0, totalDescuentos: 0 };
 
-  // Estados UI
   loading = false;
   guardando = false;
   errorMsg = '';
   mensajeOk = '';
 
-  // Modal producto
   modalProductoAbierto = false;
   productoEditando: Producto | null = null;
-
-  // Modal categoria
   modalCategoriaAbierto = false;
   categoriaEditando: Categoria | null = null;
-
-  // Modal descuento
   modalDescuentoAbierto = false;
   descuentoEditando: Descuento | null = null;
 
   tallas: Talla[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-  estadosPedido: EstadoPedido[] = [
-    'pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'
-  ];
+  estadosPedido: EstadoPedido[] = ['pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'];
 
   readonly Number = Number;
 
-  // Formulario producto
   formProducto: FormGroup = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     descripcion: [''],
     precio: [0, [Validators.required, Validators.min(0)]],
     categoriaId: [null, Validators.required],
     stock: [0, [Validators.required, Validators.min(0)]],
-    talla: [null],
     color: [''],
     imagenUrl: [''],
     activo: [true]
   });
 
-  // Formulario categoria
   formCategoria: FormGroup = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     descripcion: [''],
     imagenCategoria: ['']
   });
 
-  // Formulario descuento
   formDescuento: FormGroup = this.fb.group({
     codigo: ['', [Validators.required, Validators.minLength(3)]],
     porcentaje: [10, [Validators.required, Validators.min(1), Validators.max(100)]],
@@ -101,15 +82,12 @@ export class AdminComponent implements OnInit {
     activo: [true]
   });
 
-  ngOnInit() {
-    this.cargarDashboard();
-  }
+  ngOnInit() { this.cargarDashboard(); }
 
   cambiarSeccion(seccion: SeccionAdmin) {
     this.seccionActiva = seccion;
     this.errorMsg = '';
     this.mensajeOk = '';
-
     switch (seccion) {
       case 'productos': this.cargarProductos(); break;
       case 'categorias': this.cargarCategorias(); break;
@@ -137,10 +115,7 @@ export class AdminComponent implements OnInit {
   cargarProductos() {
     this.loading = true;
     this.productosService.getAll({ limite: 50 }).subscribe({
-      next: (res) => {
-        this.productos = res.datos;
-        this.loading = false;
-      },
+      next: (res) => { this.productos = res.datos; this.loading = false; },
       error: () => this.loading = false
     });
   }
@@ -148,23 +123,22 @@ export class AdminComponent implements OnInit {
   abrirModalProducto(producto?: Producto) {
     this.productoEditando = producto || null;
     this.errorMsg = '';
+    this.tallaSeleccionada = null;
 
     if (producto) {
+      this.tallaSeleccionada = producto.talla || null;
       this.formProducto.patchValue({
         nombre: producto.nombre,
         descripcion: producto.descripcion || '',
         precio: producto.precio,
         categoriaId: producto.categoriaId,
         stock: producto.stock,
-        talla: producto.talla || null,
         color: producto.color || '',
         imagenUrl: producto.imagenUrl || '',
         activo: producto.activo
       });
     } else {
-      this.formProducto.reset({
-        precio: 0, stock: 0, activo: true, talla: null
-      });
+      this.formProducto.reset({ precio: 0, stock: 0, activo: true });
     }
 
     if (this.categorias.length === 0) this.cargarCategorias();
@@ -174,6 +148,7 @@ export class AdminComponent implements OnInit {
   cerrarModalProducto() {
     this.modalProductoAbierto = false;
     this.productoEditando = null;
+    this.tallaSeleccionada = null;
     this.formProducto.reset();
   }
 
@@ -186,7 +161,10 @@ export class AdminComponent implements OnInit {
     this.guardando = true;
     this.errorMsg = '';
 
-    const dto = this.formProducto.value;
+    const dto = {
+      ...this.formProducto.value,
+      talla: this.tallaSeleccionada
+    };
 
     const obs = this.productoEditando
       ? this.productosService.update(this.productoEditando.id, dto)
@@ -197,8 +175,7 @@ export class AdminComponent implements OnInit {
         this.guardando = false;
         this.cerrarModalProducto();
         this.cargarProductos();
-        this.mensajeOk = this.productoEditando
-          ? 'Producto actualizado' : 'Producto creado';
+        this.mensajeOk = this.productoEditando ? 'Producto actualizado' : 'Producto creado';
         setTimeout(() => this.mensajeOk = '', 3000);
       },
       error: (err) => {
@@ -215,14 +192,15 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  seleccionarTalla(talla: Talla) {
+    this.tallaSeleccionada = this.tallaSeleccionada === talla ? null : talla;
+  }
+
   // ─── CATEGORIAS ───────────────────────────────────────
   cargarCategorias() {
     this.loading = true;
     this.categoriasService.getAll().subscribe({
-      next: (cats) => {
-        this.categorias = cats;
-        this.loading = false;
-      },
+      next: (cats) => { this.categorias = cats; this.loading = false; },
       error: () => this.loading = false
     });
   }
@@ -230,7 +208,6 @@ export class AdminComponent implements OnInit {
   abrirModalCategoria(categoria?: Categoria) {
     this.categoriaEditando = categoria || null;
     this.errorMsg = '';
-
     if (categoria) {
       this.formCategoria.patchValue({
         nombre: categoria.nombre,
@@ -240,7 +217,6 @@ export class AdminComponent implements OnInit {
     } else {
       this.formCategoria.reset();
     }
-
     this.modalCategoriaAbierto = true;
   }
 
@@ -255,13 +231,10 @@ export class AdminComponent implements OnInit {
       this.formCategoria.markAllAsTouched();
       return;
     }
-
     this.guardando = true;
-
     const obs = this.categoriaEditando
       ? this.categoriasService.update(this.categoriaEditando.id, this.formCategoria.value)
       : this.categoriasService.create(this.formCategoria.value);
-
     obs.subscribe({
       next: () => {
         this.guardando = false;
@@ -281,9 +254,7 @@ export class AdminComponent implements OnInit {
     if (!confirm('¿Eliminar esta categoria?')) return;
     this.categoriasService.delete(id).subscribe({
       next: () => this.cargarCategorias(),
-      error: (err) => {
-        this.errorMsg = err.error?.message || 'Error al eliminar';
-      }
+      error: (err) => { this.errorMsg = err.error?.message || 'Error al eliminar'; }
     });
   }
 
@@ -291,10 +262,7 @@ export class AdminComponent implements OnInit {
   cargarPedidos() {
     this.loading = true;
     this.pedidosService.getAll().subscribe({
-      next: (p) => {
-        this.pedidos = p;
-        this.loading = false;
-      },
+      next: (p) => { this.pedidos = p; this.loading = false; },
       error: () => this.loading = false
     });
   }
@@ -307,9 +275,7 @@ export class AdminComponent implements OnInit {
         this.mensajeOk = 'Estado actualizado';
         setTimeout(() => this.mensajeOk = '', 2000);
       },
-      error: (err) => {
-        this.errorMsg = err.error?.message || 'Error al actualizar estado';
-      }
+      error: (err) => { this.errorMsg = err.error?.message || 'Error al actualizar estado'; }
     });
   }
 
@@ -317,10 +283,7 @@ export class AdminComponent implements OnInit {
   cargarDescuentos() {
     this.loading = true;
     this.descuentosService.getAll().subscribe({
-      next: (d) => {
-        this.descuentos = d;
-        this.loading = false;
-      },
+      next: (d) => { this.descuentos = d; this.loading = false; },
       error: () => this.loading = false
     });
   }
@@ -328,7 +291,6 @@ export class AdminComponent implements OnInit {
   abrirModalDescuento(descuento?: Descuento) {
     this.descuentoEditando = descuento || null;
     this.errorMsg = '';
-
     if (descuento) {
       this.formDescuento.patchValue({
         codigo: descuento.codigo,
@@ -341,7 +303,6 @@ export class AdminComponent implements OnInit {
     } else {
       this.formDescuento.reset({ porcentaje: 10, activo: true });
     }
-
     this.modalDescuentoAbierto = true;
   }
 
@@ -356,16 +317,10 @@ export class AdminComponent implements OnInit {
       this.formDescuento.markAllAsTouched();
       return;
     }
-
     this.guardando = true;
-
     const obs = this.descuentoEditando
-      ? this.descuentosService.update(
-          this.descuentoEditando.id,
-          this.formDescuento.value
-        )
+      ? this.descuentosService.update(this.descuentoEditando.id, this.formDescuento.value)
       : this.descuentosService.create(this.formDescuento.value);
-
     obs.subscribe({
       next: () => {
         this.guardando = false;

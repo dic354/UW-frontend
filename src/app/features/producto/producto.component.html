@@ -46,7 +46,8 @@
             </span>
           </div>
 
-          <div class="galeria" *ngIf="producto.imagenes && producto.imagenes.length > 0">
+          <div class="galeria"
+               *ngIf="producto.imagenes && producto.imagenes.length > 0">
             <div
               class="galeria-thumb"
               [class.active]="imagenActiva === producto.imagenUrl"
@@ -73,11 +74,11 @@
 
           <h1 class="producto-nombre">{{ producto.nombre }}</h1>
 
-          <div class="producto-rating" *ngIf="resenas && resenas.totalResenas > 0">
+          <div class="producto-rating"
+               *ngIf="resenas && resenas.totalResenas > 0">
             <div class="estrellas">
-              <i
-                *ngFor="let llena of getEstrellas(resenas.mediaPuntuacion)"
-                [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
+              <i *ngFor="let llena of getEstrellas(resenas.mediaPuntuacion)"
+                 [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
               </i>
             </div>
             <span class="rating-texto">
@@ -96,19 +97,27 @@
             <span class="detalle-valor">{{ producto.color }}</span>
           </div>
 
-          <div class="talla-selector" *ngIf="producto.talla">
-            <p class="detalle-label mb-2">Talla:</p>
+          <!-- Selector de talla — visual, todas disponibles -->
+          <div class="talla-selector">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="detalle-label mb-0">Talla</p>
+            </div>
             <div class="tallas-grid">
               <button
                 *ngFor="let t of tallas"
                 class="talla-btn"
                 [class.active]="tallaSeleccionada === t"
-                [class.disabled]="producto.talla !== t"
-                [disabled]="producto.talla !== t"
-                (click)="tallaSeleccionada = t">
+                (click)="tallaSeleccionada = t; intentoCompra = false">
                 {{ t }}
               </button>
             </div>
+            <p class="talla-seleccionada-texto" *ngIf="tallaSeleccionada">
+              Talla seleccionada: <strong>{{ tallaSeleccionada }}</strong>
+            </p>
+            <p class="talla-error" *ngIf="!tallaSeleccionada && intentoCompra">
+              <i class="bi bi-exclamation-circle me-1"></i>
+              Selecciona una talla antes de continuar
+            </p>
           </div>
 
           <p class="stock-info" *ngIf="producto.stock > 0">
@@ -137,10 +146,12 @@
             </div>
           </div>
 
-          <div *ngIf="mensajeCarrito" class="alert alert-success py-2 small mt-3">
+          <div *ngIf="mensajeCarrito"
+               class="alert alert-success py-2 small mt-3">
             <i class="bi bi-check-circle me-2"></i>{{ mensajeCarrito }}
           </div>
-          <div *ngIf="errorMsg" class="alert alert-danger py-2 small mt-3">
+          <div *ngIf="errorMsg"
+               class="alert alert-danger py-2 small mt-3">
             <i class="bi bi-exclamation-circle me-2"></i>{{ errorMsg }}
           </div>
 
@@ -169,12 +180,12 @@
       <div class="resenas-section">
         <h3 class="resenas-title">Resenas del producto</h3>
 
-        <div class="resenas-media" *ngIf="resenas && resenas.totalResenas > 0">
+        <div class="resenas-media"
+             *ngIf="resenas && resenas.totalResenas > 0">
           <span class="media-numero">{{ resenas.mediaPuntuacion }}</span>
           <div class="estrellas">
-            <i
-              *ngFor="let llena of getEstrellas(resenas.mediaPuntuacion)"
-              [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
+            <i *ngFor="let llena of getEstrellas(resenas.mediaPuntuacion)"
+               [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
             </i>
           </div>
           <span class="text-muted small">
@@ -187,9 +198,8 @@
             <div class="resena-header">
               <span class="resena-autor">{{ r.usuario.nombre }}</span>
               <div class="estrellas small">
-                <i
-                  *ngFor="let llena of getEstrellas(r.puntuacion)"
-                  [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
+                <i *ngFor="let llena of getEstrellas(r.puntuacion)"
+                   [class]="llena ? 'bi bi-star-fill' : 'bi bi-star'">
                 </i>
               </div>
               <span class="resena-fecha text-muted small">
@@ -202,7 +212,8 @@
           </div>
         </div>
 
-        <div *ngIf="resenas && resenas.totalResenas === 0" class="sin-resenas">
+        <div *ngIf="resenas && resenas.totalResenas === 0"
+             class="sin-resenas">
           <i class="bi bi-chat-square-text fs-2 mb-2 d-block"></i>
           <p>Aun no hay resenas para este producto</p>
         </div>
@@ -213,13 +224,12 @@
           <div class="mb-3">
             <label class="form-label">Puntuacion</label>
             <div class="estrellas-selector">
-              <i
-                *ngFor="let s of [1,2,3,4,5]"
-                class="bi cursor-pointer fs-4"
-                [class.bi-star-fill]="nuevaResena.puntuacion >= s"
-                [class.bi-star]="nuevaResena.puntuacion < s"
-                [class.text-warning]="nuevaResena.puntuacion >= s"
-                (click)="nuevaResena.puntuacion = s">
+              <i *ngFor="let s of [1,2,3,4,5]"
+                 class="bi cursor-pointer fs-4"
+                 [class.bi-star-fill]="nuevaResena.puntuacion >= s"
+                 [class.bi-star]="nuevaResena.puntuacion < s"
+                 [class.text-warning]="nuevaResena.puntuacion >= s"
+                 (click)="nuevaResena.puntuacion = s">
               </i>
             </div>
           </div>
@@ -254,6 +264,5 @@
       </div>
 
     </ng-container>
-
   </div>
 </div>
